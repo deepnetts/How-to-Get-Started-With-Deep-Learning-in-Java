@@ -1,6 +1,6 @@
 # How-to-Get-Started-With-Deep-Learning-in-Java
 
-This repo contains full source code example for tutorial How to Get Started With Deep Learning in Java
+This repo contains full source code of handwriten digit recognition example from tutorial How to Get Started With Deep Learning in Java.
  
 To run this example you need to download and install Deep Netts Java deep learning library.
 https://www.deepnetts.com/download
