@@ -8,4 +8,4 @@ https://www.deepnetts.com/download
 Step-by-step guide for installing Deep Netts is available at
 https://www.deepnetts.com/getting-started
  
-For more information see https://www.deepnetts.com
+For more information about Deep Netts see https://www.deepnetts.com
