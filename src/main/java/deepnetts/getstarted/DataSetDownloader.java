@@ -1,12 +1,7 @@
 package deepnetts.getstarted;
 
-import deepnetts.data.TabularDataSet;
-
-import deepnetts.data.DataSets;
 import java.io.File;
 import java.io.IOException;
-import javax.visrec.ml.data.DataSet;
-import deepnetts.data.MLDataItem;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;

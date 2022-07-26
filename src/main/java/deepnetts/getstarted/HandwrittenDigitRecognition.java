@@ -6,7 +6,6 @@ import deepnetts.data.ImageSet;
 import deepnetts.net.ConvolutionalNetwork;
 import deepnetts.net.train.BackpropagationTrainer;
 import deepnetts.util.DeepNettsException;
-import deepnetts.examples.util.ExampleDataSets; // ovaj ubaci u 2.0.1 kad dodas jos fixes - popravi sve bugove!!!
 import javax.visrec.ml.eval.EvaluationMetrics;
 import deepnetts.net.layers.activation.ActivationType;
 import deepnetts.net.loss.LossType;
@@ -15,9 +14,8 @@ import deepnetts.util.Tensor;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Recognition of hand-written digits. This example shows how to use
@@ -49,8 +47,9 @@ public class HandwrittenDigitRecognition {
     String labelsFile = "mnist/labels.txt"; // data set ne sme da bud elokalni - neka ga downloaduuje sa github-a - mozda visrec?
     String trainingFile = "mnist/train.txt";
 
-    private static final Logger LOGGER = LogManager.getLogger(DeepNetts.class.getName());
-
+    static final Logger LOGGER = Logger.getLogger(DeepNetts.class.getName());
+    
+    
     public void run() throws DeepNettsException, IOException {
 
         // download MNIST data set from github
@@ -97,29 +96,37 @@ public class HandwrittenDigitRecognition {
 
         // print evaluation metrics
         LOGGER.info("Classification metrics");
-        LOGGER.info(em);
+        LOGGER.info(em.toString());
 
         // Save trained network to file
         FileIO.writeToFile(neuralNet, "mnistDemo.dnet");
 
+        // Test trained network on a spcific image
         ExampleImage someImage = new ExampleImage(ImageIO.read(new File("mnist/training/9/00019.png"))); // load some image from file
-        someImage.invert(); // used in this example/data set in order to focus on black images and not white background
+        someImage.invert(); // image preprocessing used in this example/data set in order to put focus on black images and not white background
         Tensor predictions = neuralNet.predict(someImage.getInput()); // get prediction for the specified image
         int maxIdx = indexOfMax(predictions); // get index of prediction with the highest probability
-        LOGGER.info(predictions);
-        LOGGER.info("Image label with highest probability:"+neuralNet.getOutputLabel(maxIdx));
+        LOGGER.info("Probabilities by image category:");
+        LOGGER.info(predictions.toString());
+        LOGGER.info("Image category label with highest probability:"+neuralNet.getOutputLabel(maxIdx));
         
         // shutdown the thread pool
         DeepNetts.shutdown();
 
     }
     
-    int indexOfMax(Tensor tensor) {
+    /**
+     * Returns index position of element with max value.
+     * 
+     * @param array of float values wrapped in Tensor
+     * @return idx of max value
+     */
+    int indexOfMax(Tensor array) {
         float max = -1;
         int maxIdx = -1;
-        for(int i=0; i<tensor.size(); i++) {
-            if (tensor.get(i) > max) {
-                max = tensor.get(i);
+        for(int i=0; i<array.size(); i++) {
+            if (array.get(i) > max) {
+                max = array.get(i);
                 maxIdx = i;
             }
         }
